@@ -209,6 +209,8 @@ The same agent tasks run on a hosted model vs two local open-weight models. **No
 | ollama `llama3.2:1b` (1.3 GB) | 💻 local | 41s | 2/3 |
 | ollama `qwen2.5:7b` (4.7 GB) | 💻 local | 64s | 2/3 |
 
+> **Hardware note** (for comparison only): the local Ollama models ran on **CPU-only** inference — an ASUS VivoBook X515EAU (Intel Core i5-1135G7, 19 GB RAM, integrated Intel Iris Xe graphics, **no dedicated GPU**). A machine with a dedicated GPU would run the local models significantly faster.
+
 > **Grounded** = the answer cited a retrieved source (`[name]`). All three answered *correctly*; the hosted model reliably cited its sources, while the local models often answered correctly *without* citing. Local models trade speed for privacy and offline use.
 
 Reproduce locally:
