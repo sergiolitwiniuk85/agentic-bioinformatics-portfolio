@@ -12,7 +12,7 @@ mcp = MCPServer("hpc-catalog")
 DATASETS = [
     {"id": "pbmc3k", "name": "PBMC 3k", "kind": "single-cell", "size": "5 MB"},
     {"id": "visium_sge", "name": "Visium lymph node", "kind": "spatial", "size": "25 MB"},
-    {"id": "xenium_demo", "name": "Xenium breast cancer", "kind": "spatial (subcellular)", "size": "2 GB", "status": "planned"},
+    {"id": "xenium_breast", "name": "Xenium breast cancer", "kind": "subcellular", "size": "7275 cells x 280 genes"},
 ]
 
 _jobs: dict[str, str] = {}

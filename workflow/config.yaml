@@ -24,3 +24,7 @@ de:
 perturbation:
   resource: "progeny"
   top: 1000
+
+xenium:
+  resolution: 0.5
+  min_counts: 5

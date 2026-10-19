@@ -36,5 +36,15 @@ def list_tools() -> list[str]:
 
 
 def call_tool(name: str, args: dict[str, Any] | None = None) -> str:
-    """Synchronously call an MCP tool and return its text output."""
-    return asyncio.run(_call_tool_async(name, args or {}))
+    """Synchronously call an MCP tool and return its text output.
+
+    Retries once because the stdio subprocess can race on teardown.
+    """
+    args = args or {}
+    last_exc: Exception | None = None
+    for _ in range(2):
+        try:
+            return asyncio.run(_call_tool_async(name, args))
+        except RuntimeError as exc:
+            last_exc = exc
+    raise last_exc if last_exc is not None else RuntimeError("MCP call failed")

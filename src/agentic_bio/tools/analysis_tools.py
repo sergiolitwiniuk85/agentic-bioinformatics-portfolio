@@ -16,16 +16,23 @@ REPO = Path(__file__).resolve().parents[3]
 DE_CSV = REPO / "results" / "de" / "pbmc3k_markers.csv"
 PROV = REPO / "results" / "report" / "provenance.json"
 MANIFEST = REPO / "data" / "manifest.json"
+XENIUM_MATRIX = REPO / "data" / "xenium" / "cell_feature_matrix.h5"
+XENIUM_SUMMARY = REPO / "results" / "xenium" / "xenium_summary.json"
 
 _RUN_HINT = "Run the pipeline first: snakemake -s workflow/Snakefile --directory . --cores 2"
 
 
 @tool
 def list_datasets() -> str:
-    """List the available datasets (single-cell and spatial fixtures) with checksums."""
-    if not MANIFEST.exists():
+    """List the available datasets (single-cell, spatial, and subcellular)."""
+    parts = []
+    if MANIFEST.exists():
+        parts.append(MANIFEST.read_text())
+    if XENIUM_MATRIX.exists():
+        parts.append("xenium: human breast (subcellular), 7275 cells x 280 genes")
+    if not parts:
         return f"No datasets prepared yet. {_RUN_HINT}"
-    return MANIFEST.read_text()
+    return "\n".join(parts)
 
 
 @tool
@@ -52,4 +59,12 @@ def get_markers(cluster: str) -> str:
     return sub[["gene", "logfoldchanges", "pvals_adj"]].head(10).to_string(index=False)
 
 
-ALL_TOOLS = [list_datasets, get_summary, get_markers]
+@tool
+def get_xenium_summary() -> str:
+    """Return the Xenium subcellular analysis summary (cells and clusters)."""
+    if not XENIUM_SUMMARY.exists():
+        return "No Xenium results yet. Run: snakemake -s workflow/Snakefile --directory . xenium_figure"
+    return XENIUM_SUMMARY.read_text()
+
+
+ALL_TOOLS = [list_datasets, get_summary, get_markers, get_xenium_summary]

@@ -69,3 +69,19 @@ rule report:
     output: f"{RESULTS}/report/provenance.json"
     shell:
         "python workflow/scripts/report.py {input.cluster} {input.de} {input.perturb} {output}"
+
+# --- Xenium (subcellular) — run explicitly: `snakemake xenium_figure` ---
+# Requires the dataset at data/xenium/ (manual download, ~379 MB).
+rule xenium_analyze:
+    input: "data/xenium/cell_feature_matrix.h5"
+    output:
+        h5=f"{RESULTS}/xenium/xenium_clustered.h5ad",
+        summary=f"{RESULTS}/xenium/xenium_summary.json",
+    shell:
+        "python workflow/scripts/xenium.py analyze data/xenium {output.h5} {output.summary}"
+
+rule xenium_figure:
+    input: f"{RESULTS}/xenium/xenium_clustered.h5ad"
+    output: f"{RESULTS}/figures/xenium_subcellular.png"
+    shell:
+        "python workflow/scripts/xenium.py figure {input} {output}"

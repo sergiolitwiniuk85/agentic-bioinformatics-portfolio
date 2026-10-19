@@ -39,9 +39,18 @@ def test_agent_revises_when_ungrounded():
     assert result["revision"] >= 1
 
 
-def test_agent_runs_mcp_tools_for_dataset_question():
+def test_agent_runs_mcp_tools_for_dataset_question(monkeypatch):
     pytest.importorskip("mcp", reason="mcp not installed")
     ingest_kb()
-    fake = _fake_llm("The catalog lists [02_normalization] datasets.")
+    # Mock the MCP client: the real subprocess client is covered in test_mcp.py.
+    monkeypatch.setattr(
+        "agentic_bio.mcp.client.call_tool",
+        lambda name, args=None: "pbmc3k — PBMC 3k" if name == "list_datasets" else "job-0001",
+    )
+    fake = _fake_llm(
+        "The catalog lists datasets.",  # ungrounded -> may loop
+        "The catalog lists datasets.",
+        "The catalog lists datasets.",
+    )
     result = run_agent(fake, "What datasets are available in the catalog?")
     assert "pbmc3k" in result["tool_output"]

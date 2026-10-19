@@ -125,9 +125,9 @@ python evals/e01_pipeline.py
 | Reproducibility (artifact hashes) | ✅ match |
 | Privacy (no PII / raw IDs) | ✅ clean |
 
-### Example run — two datasets, two analyses
+### Example run — three datasets, three analyses
 
-The pipeline runs on **two independent datasets**:
+The pipeline runs on **three independent datasets**:
 
 **1. PBMC 3k — single-cell RNA-seq (blood).** Leiden recovers the classic **8 cell types**:
 
@@ -155,6 +155,16 @@ The pipeline runs on **two independent datasets**:
 **Spatial gene expression** (Visium lymph node, `MS4A1` — B cells):
 
 ![Spatial MS4A1](docs/figures/spatial_gene.png)
+
+**3. Xenium breast cancer — subcellular resolution.** A third dataset at *single-cell* resolution: each dot is one segmented cell (7,248 cells, 14 clusters), not a spot. Cells are colored by cluster at their sub-micron coordinates:
+
+![Xenium subcellular](docs/figures/xenium_subcellular.png)
+
+> **E03 result** (Xenium): integrity ✅, subcellular coordinates ✅, reproducibility ✅.
+>
+> Xenium data is a manual download (~379 MB):
+> `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip`
+> then run `snakemake -s workflow/Snakefile --directory . xenium_figure`.
 
 ---
 
@@ -291,8 +301,8 @@ python evals/e02_agent.py --llm opencode-go   # or --llm ollama / default fake
 | v0.3 | LangChain tools + RAG ✅ |
 | v0.4 | LangGraph agent + MCP ✅ |
 | v0.5 | eval harness + benchmark ✅ |
-| v0.6 | Xenium spatial example (subcellular) — *next* |
-| v1.0 | docs, demo, workshop |
+| v0.6 | Xenium spatial example (subcellular) ✅ |
+| v1.0 | docs, demo, workshop — *next* |
 
 ---
 

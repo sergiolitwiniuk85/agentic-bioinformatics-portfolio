@@ -67,12 +67,18 @@ def _run_mcp_tools(question: str) -> str:
         return ""
     out = []
     if any(k in q for k in ("dataset", "catalog")):
-        out.append(f"Dataset catalog:\n{call_tool('list_datasets', {})}")
+        try:
+            out.append(f"Dataset catalog:\n{call_tool('list_datasets', {})}")
+        except Exception:  # noqa: BLE001 — external subprocess can fail in many ways
+            out.append("Dataset catalog: (MCP temporarily unavailable)")
     if any(k in q for k in ("submit", "job", "hpc")):
-        out.append(
-            "HPC job:\n"
-            + call_tool("submit_job", {"job_name": "analysis", "script": "run_pipeline.sh"})
-        )
+        try:
+            out.append(
+                "HPC job:\n"
+                + call_tool("submit_job", {"job_name": "analysis", "script": "run_pipeline.sh"})
+            )
+        except Exception:  # noqa: BLE001 — external subprocess can fail in many ways
+            out.append("HPC job: (MCP temporarily unavailable)")
     return "\n\n".join(out)
 
 
