@@ -1,9 +1,13 @@
 """Tests for the spatial-interaction filters (on synthetic data, CI-safe)."""
 
-import anndata as ad
 import numpy as np
 import pandas as pd
 import pytest
+
+pytest.importorskip("scanpy", reason="scanpy not installed (omics extra)")
+pytest.importorskip("squidpy", reason="squidpy not installed (omics extra)")
+
+import anndata as ad
 
 from agentic_bio.interactions import analyze_interaction, list_filters
 
