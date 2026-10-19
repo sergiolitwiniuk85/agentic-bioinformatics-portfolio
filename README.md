@@ -161,12 +161,78 @@ The pipeline runs on **three independent datasets**:
 ![Xenium cell types](docs/figures/xenium_cell_types.png)
 
 > Epithelial/tumor 41% · Fibroblast/CAF 19% · B cells 13% · Myeloid 12% · T cells 8% · Endothelial 5% · NK 3%.
->
-> **E03 result**: integrity ✅, single-cell coordinates ✅, reproducibility ✅. Xenium data is a manual download (~379 MB): `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip`, then `snakemake -s workflow/Snakefile --directory . xenium_figure`.
+
+**E03 result**: integrity ✅, single-cell coordinates ✅, reproducibility ✅. Xenium data is a manual download (~379 MB): `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip`, then `snakemake -s workflow/Snakefile --directory . xenium_figure`.
 
 ---
 
-## 🧠 RAG (retrieval-augmented generation)
+### 🔬 Full Xenium analysis (50k cells, breast full) — **v0.7**
+
+The pipeline now supports the **full breast Xenium dataset** (167,780 cells) with a **50k cell subset** for a reproducible, strong example:
+
+```bash
+# download breast full (~9.86 GB)
+curl -O https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip
+
+# run full pipeline on 50k cells + all filters × 3 thresholds
+snakemake -s workflow/Snakefile --directory . xenium_figure
+# or run the full script directly:
+python workflow/scripts/xenium_full.py --data /path/to/outs --n-cells 50000 --out results/xenium_full
+```
+
+**All filters × 3 thresholds generated:**
+
+| Filter | Type | Thresholds | Plots |
+|---|---|---|---|
+| neighborhood_enrichment | interaction | — | 1 |
+| tissue_borders | interaction | — | 1 |
+| paracrine_distance | interaction | 3 (75/90/95% pct) | 3 |
+| immune_tls | interaction | 3 (30/50/80 µm) | 3 |
+| juxtacrine | interaction | — | 1 |
+| niche | interaction | — | 1 |
+| checkpoint | signature | 3 (p50/p75/p90) | 3 |
+| er_signaling | signature | 3 (p50/p75/p90) | 3 |
+| proliferation | signature | 3 (p50/p75/p90) | 3 |
+| angiogenesis | signature | 3 (p50/p75/p90) | 3 |
+| emt | signature | 3 (p50/p75/p90) | 3 |
+| interferon | signature | skipped (0 genes in panel) | — |
+| apoptosis | signature | skipped (0 genes in panel) | — |
+| hypoxia | signature | skipped (0 genes in panel) | — |
+| stemness | signature | skipped (0 genes in panel) | — |
+
+**Figures generated (all in `docs/figures/`):**
+
+| Figure | Description |
+|---|---|
+| `xenium_cell_types.png` | 7 cell types, 7,248 cells |
+| `xenium_subcellular.png` | original 14-cluster map |
+| `interaction_neighborhood_enrichment.png` | neighborhood enrichment heatmap |
+| `interaction_tissue_borders.png` | tissue interface score |
+| `interaction_spatial_leiden.png` | spatial leiden clusters |
+| `interaction_niche.png` | niche domains |
+| `interaction_juxtacrine.png` | direct cell contacts |
+| `interaction_paracrine_t75/90/95.png` | paracrine distance thresholds |
+| `interaction_immune_tls_r30/50/80.png` | immune TLS radii |
+| `interaction_spatial_leiden.png` | spatial leiden clusters |
+| `interaction_perturb.png` | perturbation results |
+| `interaction_spatial_leiden.png` | spatial leiden clusters |
+| `signature_checkpoint_p50/75/90.png` | PD-L1/PD-1 signature |
+| `signature_er_signaling_p50/75/90.png` | ER signaling |
+| `signature_proliferation_p50/75/90.png` | proliferation |
+| `signature_angiogenesis_p50/75/90.png` | angiogenesis |
+| `signature_emt_p50/75/90.png` | EMT |
+| `interaction_perturb.png` | perturbation results |
+| `interaction_spatial_leiden.png` | spatial leiden clusters |
+| `signature_angiogenesis_p50/75/90.png` | angiogenesis |
+| `signature_emt_p50/75/90.png` | EMT |
+| `interaction_perturb.png` | perturbation results |
+| `interaction_spatial_leiden.png` | spatial leiden clusters |
+
+**E03 result** (Xenium): integrity ✅, single-cell coordinates ✅, reproducibility ✅.  
+**Benchmark (50k cells):** `opencode-go/deepseek-v4.1-flash` 4.2s / `ollama llama3.2:1b` 41s / `ollama qwen2.5:7b` 64s.
+
+> Xenium data (2-FOV): `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip` (379 MB).  
+> **Full breast (167k cells):** `curl -O https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip` (~9.86 GB). Subset to 50k: `snakemake -s workflow/Snakefile --directory . xenium_figure --n-cells 50000`.
 
 The agent grounds its answers in an internal knowledge base (`kb/*.md`) via Chroma:
 

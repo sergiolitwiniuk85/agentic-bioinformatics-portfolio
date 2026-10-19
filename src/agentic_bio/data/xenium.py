@@ -26,7 +26,9 @@ def load_xenium(path: Path = DEFAULT_DATA) -> ad.AnnData:
     import pandas as pd
 
     adata = sc.read_10x_h5(path / "cell_feature_matrix.h5")
-    cells = pd.read_parquet(path / "cells.parquet").set_index("cell_id")
+    cells = pd.read_parquet(path / "cells.parquet")
+    cells["cell_id"] = cells["cell_id"].astype(str)
+    cells = cells.set_index("cell_id")
     adata.obs = adata.obs.join(cells, how="left")
     adata.obsm["spatial"] = adata.obs[["x_centroid", "y_centroid"]].to_numpy()
     adata.var_names_make_unique()

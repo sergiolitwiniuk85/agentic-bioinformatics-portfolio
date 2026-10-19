@@ -122,6 +122,8 @@ def juxtacrine(adata: ad.AnnData, boundaries_path: str = "data/xenium/cell_bound
     from shapely.strtree import STRtree
 
     cb = pd.read_parquet(boundaries_path)
+    cb["cell_id"] = cb["cell_id"].astype(str)
+    cb = cb[cb["cell_id"].isin(adata.obs_names)]
     poly_by_cell: dict[str, Any] = {}
     for cid, grp in cb.groupby("cell_id"):
         poly_by_cell[cid] = Polygon(list(zip(grp["vertex_x"], grp["vertex_y"])))
