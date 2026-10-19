@@ -37,3 +37,11 @@ def test_agent_revises_when_ungrounded():
     assert result["validated"] is True
     assert "[02_normalization]" in result["answer"]
     assert result["revision"] >= 1
+
+
+def test_agent_runs_mcp_tools_for_dataset_question():
+    pytest.importorskip("mcp", reason="mcp not installed")
+    ingest_kb()
+    fake = _fake_llm("The catalog lists [02_normalization] datasets.")
+    result = run_agent(fake, "What datasets are available in the catalog?")
+    assert "pbmc3k" in result["tool_output"]

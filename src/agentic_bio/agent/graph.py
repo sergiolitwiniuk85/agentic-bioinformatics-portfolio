@@ -50,7 +50,30 @@ def _run_tools(state: AgentState) -> dict:
         parts.append(
             f"Markers for cluster {cluster}:\n{get_markers.invoke({'cluster': cluster})}"
         )
+    mcp = _run_mcp_tools(state["question"])
+    if mcp:
+        parts.append(mcp)
     return {"tool_output": "\n\n".join(parts)}
+
+
+def _run_mcp_tools(question: str) -> str:
+    """Invoke MCP tools (HPC / dataset catalog) when the question references them."""
+    q = question.lower()
+    if not any(k in q for k in ("dataset", "catalog", "submit", "job", "hpc")):
+        return ""
+    try:
+        from agentic_bio.mcp.client import call_tool
+    except ImportError:
+        return ""
+    out = []
+    if any(k in q for k in ("dataset", "catalog")):
+        out.append(f"Dataset catalog:\n{call_tool('list_datasets', {})}")
+    if any(k in q for k in ("submit", "job", "hpc")):
+        out.append(
+            "HPC job:\n"
+            + call_tool("submit_job", {"job_name": "analysis", "script": "run_pipeline.sh"})
+        )
+    return "\n\n".join(out)
 
 
 def _answer(llm) -> Callable[[AgentState], dict]:

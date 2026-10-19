@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-agent = ["langchain", "langgraph", "chromadb", "langchain-openai"]
+agent = ["langchain", "langgraph", "chromadb", "langchain-openai", "mcp"]
 omics = ["scanpy", "anndata", "squidpy", "decoupler"]
 dev = ["pytest", "ruff"]
 

@@ -221,12 +221,36 @@ python benchmarks/compare_llms.py
 
 ---
 
+## 🔌 MCP integration (HPC + datasets)
+
+The agent can call external resources through the **Model Context Protocol** — the same pattern used to wire a real cluster or database. A simulated server exposes:
+
+| Tool | Purpose |
+| --- | --- |
+| `submit_job` | submit an analysis job to the (simulated) HPC |
+| `job_status` | check a job's status |
+| `list_datasets` | list the internal dataset catalog |
+
+```bash
+python -m agentic_bio.mcp.server    # start the MCP server (stdio)
+
+python -c "
+from agentic_bio.mcp.client import call_tool
+print(call_tool('list_datasets', {}))
+print(call_tool('submit_job', {'job_name': 'qc', 'script': 'run_qc.sh'}))
+"
+```
+
+The agent routes questions about *datasets*, *jobs*, or *HPC* to these MCP tools automatically.
+
+---
+
 ## 📁 Project structure
 
 ```
 .
 ├── .github/workflows/ci.yml   # CI pipeline (lint → test)
-├── src/agentic_bio/           # package source (data, tools, rag, agent)
+├── src/agentic_bio/           # package source (data, tools, rag, agent, mcp)
 ├── kb/                        # knowledge base for RAG
 ├── workflow/                  # Snakemake pipeline + scripts + config
 ├── evals/                     # eval gates (E01 …)
@@ -247,8 +271,8 @@ python benchmarks/compare_llms.py
 | v0.1 (beta) | scaffold, CI, architecture ✅ |
 | v0.2 | data fixtures + Snakemake pipeline ✅ |
 | v0.3 | LangChain tools + RAG ✅ |
-| v0.4 | LangGraph agent + MCP — *in progress* |
-| v0.5 | eval harness + benchmark |
+| v0.4 | LangGraph agent + MCP ✅ |
+| v0.5 | eval harness + benchmark — *next* |
 | v1.0 | docs, demo, workshop |
 
 ---
