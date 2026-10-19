@@ -11,8 +11,9 @@ venv/
 env/
 
 # Data (large omics fixtures)
-data/raw/
-data/processed/
+/data/
+/results/
+/.snakemake/
 *.h5ad
 *.h5
 *.loom

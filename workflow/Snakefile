@@ -1,0 +1,67 @@
+configfile: "workflow/config.yaml"
+
+RAW = "data/raw"
+RESULTS = "results"
+
+rule all:
+    input:
+        f"{RESULTS}/report/provenance.json",
+        f"{RESULTS}/spatial/visium_nhood.h5ad",
+        f"{RESULTS}/figures/nhood_enrichment.png",
+
+rule prepare_data:
+    output:
+        raw_pbmc=f"{RAW}/pbmc3k.h5ad",
+        raw_vis=f"{RAW}/visium_sge.h5ad",
+        manifest="data/manifest.json",
+    shell:
+        "python workflow/scripts/prepare_data.py data/raw data/manifest.json"
+
+rule qc:
+    input: f"{RAW}/pbmc3k.h5ad"
+    output: f"{RESULTS}/qc/pbmc3k_qc.h5ad"
+    shell:
+        "python workflow/scripts/qc.py {input} {output}"
+
+rule normalize:
+    input: f"{RESULTS}/qc/pbmc3k_qc.h5ad"
+    output: f"{RESULTS}/norm/pbmc3k_norm.h5ad"
+    shell:
+        "python workflow/scripts/normalize.py {input} {output}"
+
+rule cluster:
+    input: f"{RESULTS}/norm/pbmc3k_norm.h5ad"
+    output:
+        h5=f"{RESULTS}/cluster/pbmc3k_cluster.h5ad",
+        fig=f"{RESULTS}/figures/umap_leiden.png",
+    shell:
+        "python workflow/scripts/cluster.py {input} {output.h5} {output.fig}"
+
+rule de:
+    input: f"{RESULTS}/cluster/pbmc3k_cluster.h5ad"
+    output: f"{RESULTS}/de/pbmc3k_markers.csv"
+    shell:
+        "python workflow/scripts/de.py {input} {output}"
+
+rule spatial:
+    input: f"{RAW}/visium_sge.h5ad"
+    output:
+        h5=f"{RESULTS}/spatial/visium_nhood.h5ad",
+        fig=f"{RESULTS}/figures/nhood_enrichment.png",
+    shell:
+        "python workflow/scripts/spatial.py {input} {output.h5} {output.fig}"
+
+rule perturb:
+    input: f"{RESULTS}/cluster/pbmc3k_cluster.h5ad"
+    output: f"{RESULTS}/perturb/progeny_activity.csv"
+    shell:
+        "python workflow/scripts/perturb.py {input} {output}"
+
+rule report:
+    input:
+        cluster=f"{RESULTS}/cluster/pbmc3k_cluster.h5ad",
+        de=f"{RESULTS}/de/pbmc3k_markers.csv",
+        perturb=f"{RESULTS}/perturb/progeny_activity.csv",
+    output: f"{RESULTS}/report/provenance.json"
+    shell:
+        "python workflow/scripts/report.py {input.cluster} {input.de} {input.perturb} {output}"

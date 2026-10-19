@@ -1,0 +1,26 @@
+datasets:
+  single_cell: "pbmc3k"
+  spatial: "visium_sge"
+
+qc:
+  min_genes: 200
+  min_cells: 3
+  max_genes: 2500
+  max_pct_mt: 5
+
+normalize:
+  target_sum: 10000
+  n_top_genes: 2000
+
+cluster:
+  n_pcs: 50
+  n_neighbors: 15
+  resolution: 1.0
+
+de:
+  method: "wilcoxon"
+  n_markers: 25
+
+perturbation:
+  resource: "progeny"
+  top: 1000

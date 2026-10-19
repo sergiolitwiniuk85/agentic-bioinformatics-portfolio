@@ -103,12 +103,38 @@ pytest -q
 
 ---
 
+## ⚙️ Reproducible pipeline
+
+```bash
+python3 -m venv --system-site-packages .venv
+source .venv/bin/activate
+pip install snakemake decoupler pyyaml matplotlib
+
+# full workflow: download → QC → normalize → cluster → DE → spatial → perturbation
+snakemake -s workflow/Snakefile --directory . --cores 2
+
+# eval gate (correctness / reproducibility / privacy)
+python evals/e01_pipeline.py
+```
+
+**E01 result** (PBMC 3k, 8 clusters):
+
+| Check | Result |
+| --- | --- |
+| Correctness (expected markers) | ✅ 14/16 found (CD79A, LYZ, NKG7, PPBP, …) |
+| Reproducibility (artifact hashes) | ✅ match |
+| Privacy (no PII / raw IDs) | ✅ clean |
+
+---
+
 ## 📁 Project structure
 
 ```
 .
-├── .github/workflows/ci.yml   # CI pipeline (lint → test → eval → docker)
-├── src/agentic_bio/           # package source
+├── .github/workflows/ci.yml   # CI pipeline (lint → test)
+├── src/agentic_bio/           # package source (data layer)
+├── workflow/                  # Snakemake pipeline + scripts + config
+├── evals/                     # eval gates (E01 …)
 ├── tests/                     # unit + smoke tests
 ├── docs/                      # architecture & Mermaid diagrams
 ├── pyproject.toml             # project config + dependencies
@@ -122,9 +148,9 @@ pytest -q
 
 | Version | Scope |
 | --- | --- |
-| **v0.1 (beta)** | scaffold, CI, architecture — *this repo* |
-| v0.2 | data fixtures + Snakemake pipeline |
-| v0.3 | LangChain tools + RAG |
+| v0.1 (beta) | scaffold, CI, architecture ✅ |
+| v0.2 | data fixtures + Snakemake pipeline ✅ |
+| v0.3 | LangChain tools + RAG — *next* |
 | v0.4 | LangGraph agent + MCP |
 | v0.5 | eval harness + benchmark |
 | v1.0 | docs, demo, workshop |
