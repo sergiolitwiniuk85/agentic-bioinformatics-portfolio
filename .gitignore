@@ -39,3 +39,6 @@ Thumbs.db
 htmlcov/
 .pytest_cache/
 .ruff_cache/
+
+# Tooling caches (not part of the project)
+.atl/
