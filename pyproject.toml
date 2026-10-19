@@ -16,7 +16,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Intended Audience :: Science/Research",
 ]
-dependencies = []
+dependencies = [
+    "pandas>=2.0",
+    "langchain-core>=0.3",
+]
 
 [project.optional-dependencies]
 agent = ["langchain", "langgraph", "chromadb"]
