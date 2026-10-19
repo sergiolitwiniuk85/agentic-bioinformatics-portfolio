@@ -156,15 +156,13 @@ The pipeline runs on **three independent datasets**:
 
 ![Spatial MS4A1](docs/figures/spatial_gene.png)
 
-**3. Xenium breast cancer — subcellular resolution.** A third dataset at *single-cell* resolution: each dot is one segmented cell (7,248 cells, 14 clusters), not a spot. Cells are colored by cluster at their sub-micron coordinates:
+**3. Xenium breast cancer — single-cell resolution.** Each dot is one segmented cell (7,248 cells), not a spot. Cells are consolidated into **7 major cell types** (from 14 clusters) by marker-gene scoring, then tissue borders are validated with neighborhood enrichment:
 
-![Xenium subcellular](docs/figures/xenium_subcellular.png)
+![Xenium cell types](docs/figures/xenium_cell_types.png)
 
-> **E03 result** (Xenium): integrity ✅, subcellular coordinates ✅, reproducibility ✅.
+> Epithelial/tumor 41% · Fibroblast/CAF 19% · B cells 13% · Myeloid 12% · T cells 8% · Endothelial 5% · NK 3%.
 >
-> Xenium data is a manual download (~379 MB):
-> `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip`
-> then run `snakemake -s workflow/Snakefile --directory . xenium_figure`.
+> **E03 result**: integrity ✅, single-cell coordinates ✅, reproducibility ✅. Xenium data is a manual download (~379 MB): `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip`, then `snakemake -s workflow/Snakefile --directory . xenium_figure`.
 
 ---
 
@@ -270,6 +268,30 @@ The agent is evaluated on a 4-question benchmark (RAG retrieval + answer quality
 ```bash
 python evals/e02_agent.py --llm opencode-go   # or --llm ollama / default fake
 ```
+
+---
+
+## 🔬 In silico interaction & signature filters
+
+A **virtual microscope**: apply a filter to reveal a class of cell-cell interaction, or a functional gene signature, over the tissue.
+
+- **7 spatial-interaction filters**: neighborhood enrichment, tissue borders, paracrine distance, immune TLS, juxtacrine (direct cell contact), niche domains, ECM-cell.
+- **10 pre-indexed gene-signature panels**: proliferation, hypoxia, EMT, interferon, apoptosis, angiogenesis, immunotherapy/checkpoint, ER signaling, HER2, stemness.
+
+```python
+from agentic_bio.interactions import analyze_interaction, score_signature, plot_interaction, plot_signature
+from agentic_bio.data.xenium import load_xenium, analyze_xenium, annotate_cell_types
+
+adata = annotate_cell_types(analyze_xenium(load_xenium()))
+adata, _ = analyze_interaction(adata, "juxtacrine")     # direct cell contact (Xenium-only)
+adata, _ = score_signature(adata, "checkpoint")         # PD-L1 / PD-1 signature
+plot_interaction(adata, "juxtacrine", "juxtacrine.png")
+plot_signature(adata, "checkpoint", "checkpoint.png")
+```
+
+| Juxtacrine (direct contact) | Immunotherapy / checkpoint |
+| --- | --- |
+| ![Juxtacrine](docs/figures/interaction_juxtacrine.png) | ![Checkpoint](docs/figures/signature_checkpoint.png) |
 
 ---
 

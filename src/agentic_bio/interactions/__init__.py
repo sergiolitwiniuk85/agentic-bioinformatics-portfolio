@@ -6,5 +6,20 @@ from agentic_bio.interactions.core import (
     list_filters,
     plot_interaction,
 )
+from agentic_bio.interactions.signatures import (
+    SIGNATURES,
+    list_signatures,
+    plot_signature,
+    score_signature,
+)
 
-__all__ = ["FILTERS", "analyze_interaction", "list_filters", "plot_interaction"]
+__all__ = [
+    "FILTERS",
+    "SIGNATURES",
+    "analyze_interaction",
+    "list_filters",
+    "list_signatures",
+    "plot_interaction",
+    "plot_signature",
+    "score_signature",
+]

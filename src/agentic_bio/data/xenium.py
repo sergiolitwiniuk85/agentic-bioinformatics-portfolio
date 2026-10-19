@@ -10,6 +10,16 @@ import scanpy as sc
 
 DEFAULT_DATA = Path("data/xenium")
 
+CELL_TYPE_MARKERS = {
+    "Epithelial/tumor": ["EPCAM", "KRT8", "KRT18", "ERBB2", "ESR1", "MKI67", "PGR", "FOXA1"],
+    "Fibroblast/CAF": ["ACTA2", "PDGFRB", "LUM", "FAP", "VIM"],
+    "Endothelial": ["PECAM1", "VWF", "CDH5", "CLDN5"],
+    "T cells": ["CD3E", "CD3D", "CD8A", "CD4", "FOXP3"],
+    "B cells": ["MS4A1", "CD79A", "CD79B"],
+    "Myeloid": ["CD68", "CD14", "CD163", "LYZ", "ITGAX"],
+    "NK": ["NKG7", "GNLY", "KLRD1"],
+}
+
 
 def load_xenium(path: Path = DEFAULT_DATA) -> ad.AnnData:
     """Load a Xenium output bundle into AnnData with cell centroids as `obsm['spatial']`."""
@@ -37,6 +47,27 @@ def analyze_xenium(adata: ad.AnnData, resolution: float = 0.5) -> ad.AnnData:
     return adata
 
 
+def annotate_cell_types(adata: ad.AnnData) -> ad.AnnData:
+    """Consolidate clusters into major cell types by marker-gene scoring."""
+    import numpy as np
+    import pandas as pd
+    from scipy import sparse
+
+    scores: dict[str, np.ndarray] = {}
+    for ctype, markers in CELL_TYPE_MARKERS.items():
+        present = [g for g in markers if g in adata.var_names]
+        if not present:
+            continue
+        x = adata[:, present].X
+        x = x.toarray() if sparse.issparse(x) else np.asarray(x)
+        scores[ctype] = x.mean(axis=1)
+
+    df = pd.DataFrame(scores, index=adata.obs_names)
+    adata.obs["cell_type"] = df.idxmax(axis=1).values
+    adata.obs.loc[df.max(axis=1) == 0, "cell_type"] = "Unassigned"
+    return adata
+
+
 def xenium_fingerprint(adata: ad.AnnData) -> str:
     """Deterministic fingerprint of the Xenium clustering (stable across re-runs)."""
     labels = ",".join(sorted(adata.obs["leiden"].astype(str).tolist()))
@@ -57,15 +88,16 @@ def xenium_summary(adata: ad.AnnData) -> dict:
 def plot_subcellular(
     adata: ad.AnnData,
     output_fig: str,
-    title: str = "Xenium human breast — subcellular clusters",
+    color: str = "leiden",
+    title: str = "Xenium human breast — single-cell clusters (cell centroids)",
 ) -> None:
-    """Plot cells colored by cluster at their spatial (subcellular) coordinates."""
+    """Plot cells colored by `color` at their single-cell centroid coordinates."""
     import matplotlib
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    sc.pl.embedding(adata, basis="spatial", color="leiden", size=12, show=False)
+    sc.pl.embedding(adata, basis="spatial", color=color, size=12, show=False)
     plt.suptitle(title, fontweight="bold")
     Path(output_fig).parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_fig, bbox_inches="tight", dpi=120)
