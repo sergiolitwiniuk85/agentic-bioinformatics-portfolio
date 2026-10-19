@@ -245,6 +245,24 @@ The agent routes questions about *datasets*, *jobs*, or *HPC* to these MCP tools
 
 ---
 
+## 📊 E02 — agent eval gate
+
+The agent is evaluated on a 4-question benchmark (RAG retrieval + answer quality), run here with the hosted model:
+
+| Metric | Result |
+| --- | --- |
+| RAG top-1 hit rate | 4/4 (100%) |
+| Grounded (cited a real source) | 4/4 |
+| Task success (keyword) | 4/4 |
+| Hallucinated citations | 0 |
+| Privacy (no PII) | ✅ |
+
+```bash
+python evals/e02_agent.py --llm opencode-go   # or --llm ollama / default fake
+```
+
+---
+
 ## 📁 Project structure
 
 ```
@@ -272,7 +290,8 @@ The agent routes questions about *datasets*, *jobs*, or *HPC* to these MCP tools
 | v0.2 | data fixtures + Snakemake pipeline ✅ |
 | v0.3 | LangChain tools + RAG ✅ |
 | v0.4 | LangGraph agent + MCP ✅ |
-| v0.5 | eval harness + benchmark — *next* |
+| v0.5 | eval harness + benchmark ✅ |
+| v0.6 | Xenium spatial example (subcellular) — *next* |
 | v1.0 | docs, demo, workshop |
 
 ---
