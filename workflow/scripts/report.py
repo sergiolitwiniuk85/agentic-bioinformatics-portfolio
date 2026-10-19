@@ -2,13 +2,12 @@
 
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+import anndata as ad
 
-import anndata as ad  # noqa: E402
-from common import sha256  # noqa: E402
+from common import sha256
 
 
 def main(cluster_h5: str, de_csv: str, perturb_csv: str, output_json: str) -> None:
@@ -16,7 +15,7 @@ def main(cluster_h5: str, de_csv: str, perturb_csv: str, output_json: str) -> No
     n_clusters = int(adata.obs["leiden"].nunique()) if "leiden" in adata.obs else None
 
     prov = {
-        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(UTC).isoformat(),
         "summary": {
             "n_cells": int(adata.n_obs),
             "n_genes": int(adata.n_vars),

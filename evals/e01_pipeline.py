@@ -78,7 +78,7 @@ def check_privacy() -> bool:
 
 def main() -> None:
     print("=== E01 eval gate ===")
-    ok_c, n = check_correctness()
+    ok_c, _ = check_correctness()
     ok_r = check_reproducibility()
     ok_p = check_privacy()
     passed = ok_c and ok_r and ok_p

@@ -3,12 +3,11 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+import anndata as ad
+import pandas as pd
+import scanpy as sc
 
-import anndata as ad  # noqa: E402
-import pandas as pd  # noqa: E402
-import scanpy as sc  # noqa: E402
-from common import load_config  # noqa: E402
+from common import load_config
 
 
 def main(input_path: str, output_csv: str) -> None:

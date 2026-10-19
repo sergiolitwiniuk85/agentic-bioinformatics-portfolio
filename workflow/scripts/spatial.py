@@ -3,12 +3,11 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+import anndata as ad
+import scanpy as sc
+import squidpy as sq
 
-import anndata as ad  # noqa: E402
-import scanpy as sc  # noqa: E402
-import squidpy as sq  # noqa: E402
-from common import load_config  # noqa: E402
+from common import load_config
 
 
 def main(input_path: str, output_h5: str, output_fig: str) -> None:
@@ -32,7 +31,7 @@ def main(input_path: str, output_h5: str, output_fig: str) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
-    import matplotlib.pyplot as plt  # noqa: E402
+    import matplotlib.pyplot as plt
 
     sq.pl.nhood_enrichment(adata, cluster_key="leiden", show=False)
     Path(output_fig).parent.mkdir(parents=True, exist_ok=True)
