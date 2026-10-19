@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Data (large omics fixtures)
+data/raw/
+data/processed/
+*.h5ad
+*.h5
+*.loom
+*.mtx
+*.mtx.gz
+
+# Environment / secrets
+.env
+.env.*
+*.token
+.gh_token
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# Test / coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.ruff_cache/

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentic-bioinformatics-portfolio"
+version = "0.1.0"
+description = "Agentic bioinformatics assistant: LLM agents + single-cell/spatial omics with CI and continuous evaluation."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Sergio Litwiniuk" }]
+keywords = ["bioinformatics", "single-cell", "spatial-transcriptomics", "langchain", "langgraph", "llm", "rag"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+]
+dependencies = []
+
+[project.optional-dependencies]
+agent = ["langchain", "langgraph", "chromadb"]
+omics = ["scanpy", "anndata", "squidpy", "decoupler"]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+agentic-bio = "agentic_bio.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentic_bio"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
