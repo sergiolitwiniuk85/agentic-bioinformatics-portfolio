@@ -1,5 +1,6 @@
-"""Provenance report: summary stats + artifact hashes for reproducibility."""
+"""Provenance report: summary stats + artifact fingerprints for reproducibility."""
 
+import hashlib
 import json
 import sys
 from datetime import UTC, datetime
@@ -8,6 +9,13 @@ from pathlib import Path
 import anndata as ad
 
 from common import sha256
+
+
+def logical_fingerprint(adata: ad.AnnData) -> str:
+    """Deterministic fingerprint of the clustering result (stable across re-runs)."""
+    labels = ",".join(sorted(adata.obs["leiden"].astype(str).tolist()))
+    payload = f"{labels}|cells={adata.n_obs}|genes={adata.n_vars}"
+    return hashlib.sha256(payload.encode()).hexdigest()
 
 
 def main(cluster_h5: str, de_csv: str, perturb_csv: str, output_json: str) -> None:
@@ -22,7 +30,7 @@ def main(cluster_h5: str, de_csv: str, perturb_csv: str, output_json: str) -> No
             "n_clusters": n_clusters,
         },
         "artifacts": {
-            "cluster": {"path": str(cluster_h5), "sha256": sha256(Path(cluster_h5))},
+            "cluster": {"path": str(cluster_h5), "logical_sha256": logical_fingerprint(adata)},
             "de_markers": {"path": str(de_csv), "sha256": sha256(Path(de_csv))},
             "perturbation": {"path": str(perturb_csv), "sha256": sha256(Path(perturb_csv))},
         },

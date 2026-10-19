@@ -52,16 +52,18 @@ def main(
 
     # 1) statistical co-localization matrix
     sq.pl.nhood_enrichment(adata, cluster_key="leiden", show=False)
+    plt.suptitle("Visium lymph node — neighborhood enrichment", fontweight="bold")
     Path(output_nhood).parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(output_nhood, bbox_inches="tight", dpi=150)
+    plt.savefig(output_nhood, bbox_inches="tight", dpi=120)
     plt.close()
 
     # 2) tissue map colored by cluster
     sc.pl.spatial(
         adata, color="leiden", img_key="hires", library_id=_LIBRARY_ID, size=1.5, show=False
     )
+    plt.suptitle("Visium lymph node — spatial clusters (Leiden)", fontweight="bold")
     Path(output_leiden).parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(output_leiden, bbox_inches="tight", dpi=150)
+    plt.savefig(output_leiden, bbox_inches="tight", dpi=120)
     plt.close()
 
     # 3) tissue map colored by a marker gene
@@ -76,7 +78,8 @@ def main(
             cmap="Reds",
             show=False,
         )
-        plt.savefig(output_gene, bbox_inches="tight", dpi=150)
+        plt.suptitle(f"Visium lymph node — {marker} expression", fontweight="bold")
+        plt.savefig(output_gene, bbox_inches="tight", dpi=120)
         plt.close()
     else:
         shutil.copyfile(output_leiden, output_gene)

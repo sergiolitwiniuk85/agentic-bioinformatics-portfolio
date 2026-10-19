@@ -26,9 +26,10 @@ def main(input_path: str, output_h5: str, output_fig: str) -> None:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    sc.pl.umap(adata, color=["leiden"], show=False)
+    sc.pl.umap(adata, color="leiden", show=False)
+    plt.suptitle("PBMC 3k — single-cell clusters (Leiden)", fontweight="bold")
     Path(output_fig).parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(output_fig, bbox_inches="tight", dpi=150)
+    plt.savefig(output_fig, bbox_inches="tight", dpi=120)
     print(f"Cluster: {adata.obs['leiden'].nunique()} clusters")
 
 

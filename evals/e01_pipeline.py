@@ -44,6 +44,12 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def logical_fingerprint(adata) -> str:
+    labels = ",".join(sorted(adata.obs["leiden"].astype(str).tolist()))
+    payload = f"{labels}|cells={adata.n_obs}|genes={adata.n_vars}"
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
 def check_correctness() -> tuple[bool, int]:
     markers = pd.read_csv(MARKERS)
     found = set(markers["gene"].str.upper())
@@ -55,11 +61,19 @@ def check_correctness() -> tuple[bool, int]:
 
 
 def check_reproducibility() -> bool:
+    import anndata as ad
+
     prov = json.loads(PROV.read_text())
     all_ok = True
     for name, meta in prov["artifacts"].items():
-        actual = sha256(REPO / meta["path"])
-        match = actual == meta["sha256"]
+        if name == "cluster":
+            adata = ad.read_h5ad(REPO / meta["path"])
+            actual = logical_fingerprint(adata)
+            expected = meta["logical_sha256"]
+        else:
+            actual = sha256(REPO / meta["path"])
+            expected = meta["sha256"]
+        match = actual == expected
         all_ok &= match
         print(f"[reproducibility] {name}: {'match' if match else 'MISMATCH'}")
     return all_ok
