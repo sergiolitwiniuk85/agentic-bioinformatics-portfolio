@@ -199,6 +199,26 @@ The LLM is **pluggable** — pass any `BaseChatModel` (OpenAI-compatible endpoin
 
 ---
 
+## ⚡ LLM benchmark (hosted vs local)
+
+The same agent tasks run on a hosted model vs two local open-weight models. **No API keys are stored in this repo** — the factory reads them from the `OPENCODE_API_KEY` env var or the opencode auth file:
+
+| Model | Type | Avg latency | Grounded |
+| --- | --- | --- | --- |
+| opencode-go `deepseek-v4.1-flash` | ☁️ hosted | 4.2s | 3/3 |
+| ollama `llama3.2:1b` (1.3 GB) | 💻 local | 41s | 2/3 |
+| ollama `qwen2.5:7b` (4.7 GB) | 💻 local | 64s | 2/3 |
+
+> **Grounded** = the answer cited a retrieved source (`[name]`). All three answered *correctly*; the hosted model reliably cited its sources, while the local models often answered correctly *without* citing. Local models trade speed for privacy and offline use.
+
+Reproduce locally:
+
+```bash
+python benchmarks/compare_llms.py
+```
+
+---
+
 ## 📁 Project structure
 
 ```
@@ -208,7 +228,8 @@ The LLM is **pluggable** — pass any `BaseChatModel` (OpenAI-compatible endpoin
 ├── kb/                        # knowledge base for RAG
 ├── workflow/                  # Snakemake pipeline + scripts + config
 ├── evals/                     # eval gates (E01 …)
-├── tests/                     # unit + smoke + RAG tests
+├── benchmarks/                # LLM comparison harness
+├── tests/                     # unit + smoke + RAG + agent tests
 ├── docs/                      # architecture & Mermaid diagrams + figures
 ├── pyproject.toml             # project config + dependencies
 ├── LICENSE

@@ -1,0 +1,83 @@
+[
+  {
+    "model": "opencode-go/deepseek-v4.1-flash",
+    "kind": "hosted",
+    "question": "How should I normalize single-cell RNA-seq data?",
+    "latency_s": 3.79,
+    "revisions": 1,
+    "validated": true,
+    "answer": "Based on the retrieved documentation, normalization of single-cell count data should proceed as follows [02_normalization]:\n\n1. **Normalize total counts per cell to a target sum** (e.g., 10,000) \u2014 this corrects for differences in sequencing depth between cells.\n2. **Apply log1p** to stabilize variance.\n3. **Select highly variable genes** (top 2,000) for downstream dimensionality reduction.\n\nNote that normalization should be performed after quality control, which removes low-quality cells and genes (e.g., cells with <200 or >2500 detected genes, cells with >5% mitochondrial counts, and genes detected in <3 cells) [01_qc].\n\nThe provided tool results only report a pipeline summary (2,638 cells, 13,714 genes, 8 clusters) and contain no additional normalization-specific information."
+  },
+  {
+    "model": "opencode-go/deepseek-v4.1-flash",
+    "kind": "hosted",
+    "question": "What quality control steps are needed for single-cell data?",
+    "latency_s": 6.37,
+    "revisions": 1,
+    "validated": true,
+    "answer": "For single-cell data, the provided QC steps are:\n\n- **Cell filtering:** remove cells with fewer than 200 detected genes, more than 2500 genes, or >5% mitochondrial counts [01_qc].\n- **Gene filtering:** keep only genes detected in at least 3 cells [01_qc].\n\nThese steps remove low-quality cells/genes before downstream analysis [01_qc]."
+  },
+  {
+    "model": "opencode-go/deepseek-v4.1-flash",
+    "kind": "hosted",
+    "question": "How does clustering group cells by transcriptional similarity?",
+    "latency_s": 2.41,
+    "revisions": 1,
+    "validated": true,
+    "answer": "Clustering groups cells by transcriptional similarity by first scaling the data and running PCA (50 components), then building a k-nearest-neighbor graph (15 neighbors), and applying Leiden clustering to assign cells to communities [03_clustering]. Marker genes per cluster are then identified with the Wilcoxon rank-sum test [03_clustering]. In the provided pipeline summary, this resulted in 8 clusters across 2,638 cells."
+  },
+  {
+    "model": "ollama/llama3.2:1b",
+    "kind": "local",
+    "question": "How should I normalize single-cell RNA-seq data?",
+    "latency_s": 78.21,
+    "revisions": 2,
+    "validated": false,
+    "answer": "To normalize single-cell RNA-seq data, you should follow these steps:\n\n1. **Normalize total counts per cell to a target sum (e.g. 10,000)**: This can be achieved by dividing the total counts by the sum of counts per cell and then rounding to the nearest integer. [RT-LOM-12] [source]\n2. **Apply log1p to stabilize variance**: This is already done at the beginning of the data processing pipeline, as log1p is applied to stabilize variance. [RT-LOM-12] [source]\n3. **Select highly variable genes (top 2,000) for downstream dimensionality reduction**: This step is dependent on the gene filtering step, where genes detected in at least 3 cells are selected. [QIAGEN] [source]\n\nHowever, if you want to normalize total counts per cell, you would need to add the following step to your pipeline:\n\n```plaintext\n# Normalize total counts per cell to a target sum (e.g. 10,000)\nn_counts = (count_data / (sum(count_data) + 1e-16)) * 10000\n```\n\nHere's the complete updated pipeline:\n```plaintext\n# Normalization of single-cell RNA-seq data\n\nCount data must be normalized to compare cells with different sequencing depths.\n\n## Total counts per cell normalization\n\nCount data must be normalized to a target sum (e.g. 10,000) before applying the log1p.\n\n# Normalize total counts per cell to a target sum (e.g. 10,000)\nn_counts = (count_data / (sum(count_data) + 1e-16)) * 10000\n\n# Apply log1p to stabilize variance\nn_counts_log1p = log1p(n_counts)\n\n# Apply Wilcoxon rank-sum test to find marker genes per cluster\ncluster_data = {k: v for k, v in n_counts_log1p.items() if v > 5}\n```\n\nIt's worth noting that the `n_counts_log1p` step is not necessary if you're using the `log1p` function to stabilize variance, as this function already takes care of adding 1 to the sum of counts to avoid division by zero. The updated pipeline without the unnecessary `n_counts_log1p` step would be:\n```plaintext\n# Normalization of single-cell RNA-seq data\n\nCount data must be normalized to compare cells with different sequencing depths.\n\n## Steps\n- Normalize total counts per cell to a target sum (e.g. 10,000).\n- Apply log1p to stabilize variance.\n- Select highly variable genes (top 2,000) for downstream dimensionality reduction.\n\n Pipeline summary:\n{\n  \"n_cells\": 2638,\n  \"n_genes\": 13714,\n  \"n_clusters\": 8\n}\n```"
+  },
+  {
+    "model": "ollama/llama3.2:1b",
+    "kind": "local",
+    "question": "What quality control steps are needed for single-cell data?",
+    "latency_s": 31.47,
+    "revisions": 1,
+    "validated": true,
+    "answer": "To answer your question about quality control steps for single-cell data, the retrieved context highlights the following steps:\n\n1. **Cell filtering**: Removing cells with fewer than 200 detected genes, more than 2500 genes, or those with >5% mitochondrial counts, which can indicate dying cells or technical issues. [<name>] [02_normalization] # Normalization of single-cell count data. Count data must be normalized to compare cells with different sequencing depths. [02_normalization] # Normalization of single-cell count data. Normalize total counts per cell to a target sum (e.g. 10,000). [02_normalization] # Normalization of single-cell count data. Apply log1p to stabilize variance. [02_normalization] # Normalization of single-cell count data. Select highly variable genes (top 2,000) for downstream dimensionality reduction.\n\nTechnical considerations from tool results:\n- Tools used for quality control include [01_qc] and [02_normalization].\n\nBased on the context and tool results, the quality control steps for single-cell data include:\n\n- Filtering out low-quality cells based on gene count, mitochondrial percentage, and gene presence.\n- Normalizing data to a suitable scale for comparison.\n- Stabilizing variance in data using log1p transformation.\n\nThese steps are essential to ensure reliable downstream analysis of single-cell RNA-seq data."
+  },
+  {
+    "model": "ollama/llama3.2:1b",
+    "kind": "local",
+    "question": "How does clustering group cells by transcriptional similarity?",
+    "latency_s": 13.71,
+    "revisions": 1,
+    "validated": true,
+    "answer": "Based on the provided context and tool results, clustering cells by transcriptional similarity involves the following steps:\n\n1. Normalize the count data to account for differences in sequencing depth.\n2. Apply log1p to stabilize variance and prepare the data for analysis.\n3. Select highly variable genes (top 2,000) for downstream dimensionality reduction.\n\nSource document: [03_clustering] # Clustering and differential expression"
+  },
+  {
+    "model": "ollama/qwen2.5:7b",
+    "kind": "local",
+    "question": "How should I normalize single-cell RNA-seq data?",
+    "latency_s": 95.41,
+    "revisions": 2,
+    "validated": false,
+    "answer": "To normalize single-cell RNA-seq data, you should:\n\n- Normalize total counts per cell to a target sum, such as 10,000.\n- Apply log1p transformation to stabilize variance.\n- Select the top 2,000 highly variable genes for downstream analysis.\n\nThese steps are described in the normalization section of the provided context [<02_normalization>]."
+  },
+  {
+    "model": "ollama/qwen2.5:7b",
+    "kind": "local",
+    "question": "What quality control steps are needed for single-cell data?",
+    "latency_s": 49.46,
+    "revisions": 1,
+    "validated": true,
+    "answer": "For single-cell RNA-seq quality control, the following steps are recommended:\n\n1. **Cell filtering**:\n   - Remove cells with fewer than 200 detected genes.\n   - Remove cells with more than 2500 genes.\n   - Exclude cells with >5% mitochondrial counts.\n\n2. **Gene filtering**:\n   - Retain genes expressed in at least 3 cells.\n\n[01_qc]"
+  },
+  {
+    "model": "ollama/qwen2.5:7b",
+    "kind": "local",
+    "question": "How does clustering group cells by transcriptional similarity?",
+    "latency_s": 48.31,
+    "revisions": 1,
+    "validated": true,
+    "answer": "Clustering groups cells by transcriptional similarity. In the process, the data is first scaled and PCA ( Principal Component Analysis ) is run with 50 components. Then, a k-nearest-neighbor graph with 15 neighbors is built. Following this, Leiden clustering is applied to assign communities to the cells. Each cluster is then subjected to a Wilcoxon rank-sum test to identify marker genes that differentiate the clusters. This method helps in understanding the functional states or types of cells within a sample based on their gene expression profiles. [03_clustering]"
+  }
+]
