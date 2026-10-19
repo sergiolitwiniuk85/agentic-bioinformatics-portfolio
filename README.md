@@ -174,12 +174,37 @@ python -c "from agentic_bio.rag import retrieve; print(retrieve('how to normaliz
 
 ---
 
+## 🤖 LangGraph agent
+
+The agent orchestrates `retrieve → run tools → answer → validate` as a bounded loop — if the answer isn't grounded in a retrieved source, it re-answers (max 2 revisions):
+
+```bash
+pip install langgraph
+
+python -c "
+from langchain_core.language_models.fake_chat_models import GenericFakeChatModel
+from langchain_core.messages import AIMessage
+from agentic_bio.agent import run_agent
+from agentic_bio.rag import ingest_kb
+
+ingest_kb()
+fake = GenericFakeChatModel(messages=iter([
+    AIMessage(content='Normalize total counts to 10k then log1p, per [02_normalization].')
+]))
+print(run_agent(fake, 'How should I normalize single-cell data?')['answer'])
+"
+```
+
+The LLM is **pluggable** — pass any `BaseChatModel` (OpenAI-compatible endpoint, Ollama, etc.) to `build_agent(llm)`.
+
+---
+
 ## 📁 Project structure
 
 ```
 .
 ├── .github/workflows/ci.yml   # CI pipeline (lint → test)
-├── src/agentic_bio/           # package source (data, tools, rag)
+├── src/agentic_bio/           # package source (data, tools, rag, agent)
 ├── kb/                        # knowledge base for RAG
 ├── workflow/                  # Snakemake pipeline + scripts + config
 ├── evals/                     # eval gates (E01 …)
@@ -198,8 +223,8 @@ python -c "from agentic_bio.rag import retrieve; print(retrieve('how to normaliz
 | --- | --- |
 | v0.1 (beta) | scaffold, CI, architecture ✅ |
 | v0.2 | data fixtures + Snakemake pipeline ✅ |
-| v0.3 | LangChain tools + RAG — *in progress* |
-| v0.4 | LangGraph agent + MCP |
+| v0.3 | LangChain tools + RAG ✅ |
+| v0.4 | LangGraph agent + MCP — *in progress* |
 | v0.5 | eval harness + benchmark |
 | v1.0 | docs, demo, workshop |
 
