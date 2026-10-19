@@ -8,6 +8,8 @@ rule all:
         f"{RESULTS}/report/provenance.json",
         f"{RESULTS}/spatial/visium_nhood.h5ad",
         f"{RESULTS}/figures/nhood_enrichment.png",
+        f"{RESULTS}/figures/spatial_leiden.png",
+        f"{RESULTS}/figures/spatial_gene.png",
 
 rule prepare_data:
     output:
@@ -47,9 +49,11 @@ rule spatial:
     input: f"{RAW}/visium_sge.h5ad"
     output:
         h5=f"{RESULTS}/spatial/visium_nhood.h5ad",
-        fig=f"{RESULTS}/figures/nhood_enrichment.png",
+        nhood=f"{RESULTS}/figures/nhood_enrichment.png",
+        leiden=f"{RESULTS}/figures/spatial_leiden.png",
+        gene=f"{RESULTS}/figures/spatial_gene.png",
     shell:
-        "python workflow/scripts/spatial.py {input} {output.h5} {output.fig}"
+        "python workflow/scripts/spatial.py {input} {output.h5} {output.nhood} {output.leiden} {output.gene}"
 
 rule perturb:
     input: f"{RESULTS}/cluster/pbmc3k_cluster.h5ad"
