@@ -329,37 +329,45 @@ python workflow/scripts/xenium_full.py --data /path/to/outs --n-cells 50000 --ou
 | hypoxia | signature | skipped (0 genes in panel) | — |
 | stemness | signature | skipped (0 genes in panel) | — |
 
-**Figures generated (click a thumbnail to open full size):**
+**Figures generated** — each filter's thresholds are shown side by side. Click a thumbnail to open full size.
 
-| Preview | Figure | Description |
-|---|---|---|
-| [![cell types](docs/figures/xenium_cell_types.png)](docs/figures/xenium_cell_types.png) | `xenium_cell_types.png` | 7 cell types, 7,248 cells |
-| [![subcellular](docs/figures/xenium_subcellular.png)](docs/figures/xenium_subcellular.png) | `xenium_subcellular.png` | original 14-cluster map |
-| [![neighborhood](docs/figures/interaction_neighborhood_enrichment.png)](docs/figures/interaction_neighborhood_enrichment.png) | `interaction_neighborhood_enrichment.png` | neighborhood enrichment heatmap |
-| [![borders](docs/figures/interaction_tissue_borders.png)](docs/figures/interaction_tissue_borders.png) | `interaction_tissue_borders.png` | tissue interface score |
-| [![niche](docs/figures/interaction_niche.png)](docs/figures/interaction_niche.png) | `interaction_niche.png` | niche domains |
-| [![juxtacrine](docs/figures/interaction_juxtacrine.png)](docs/figures/interaction_juxtacrine.png) | `interaction_juxtacrine.png` | direct cell contacts |
-| [![paracrine t75](docs/figures/interaction_paracrine_t75.png)](docs/figures/interaction_paracrine_t75.png) | `interaction_paracrine_t75.png` | paracrine distance, p75 |
-| [![paracrine t90](docs/figures/interaction_paracrine_t90.png)](docs/figures/interaction_paracrine_t90.png) | `interaction_paracrine_t90.png` | paracrine distance, p90 |
-| [![paracrine t95](docs/figures/interaction_paracrine_t95.png)](docs/figures/interaction_paracrine_t95.png) | `interaction_paracrine_t95.png` | paracrine distance, p95 |
-| [![TLS r30](docs/figures/interaction_immune_tls_r30.png)](docs/figures/interaction_immune_tls_r30.png) | `interaction_immune_tls_r30.png` | immune TLS, r30 µm |
-| [![TLS r50](docs/figures/interaction_immune_tls_r50.png)](docs/figures/interaction_immune_tls_r50.png) | `interaction_immune_tls_r50.png` | immune TLS, r50 µm |
-| [![TLS r80](docs/figures/interaction_immune_tls_r80.png)](docs/figures/interaction_immune_tls_r80.png) | `interaction_immune_tls_r80.png` | immune TLS, r80 µm |
-| [![checkpoint p50](docs/figures/signature_checkpoint_p50.png)](docs/figures/signature_checkpoint_p50.png) | `signature_checkpoint_p50.png` | checkpoint signature, p50 |
-| [![checkpoint p75](docs/figures/signature_checkpoint_p75.png)](docs/figures/signature_checkpoint_p75.png) | `signature_checkpoint_p75.png` | checkpoint signature, p75 |
-| [![checkpoint p90](docs/figures/signature_checkpoint_p90.png)](docs/figures/signature_checkpoint_p90.png) | `signature_checkpoint_p90.png` | checkpoint signature, p90 |
-| [![ER p50](docs/figures/signature_er_signaling_p50.png)](docs/figures/signature_er_signaling_p50.png) | `signature_er_signaling_p50.png` | ER signaling, p50 |
-| [![ER p75](docs/figures/signature_er_signaling_p75.png)](docs/figures/signature_er_signaling_p75.png) | `signature_er_signaling_p75.png` | ER signaling, p75 |
-| [![ER p90](docs/figures/signature_er_signaling_p90.png)](docs/figures/signature_er_signaling_p90.png) | `signature_er_signaling_p90.png` | ER signaling, p90 |
-| [![prolif p50](docs/figures/signature_proliferation_p50.png)](docs/figures/signature_proliferation_p50.png) | `signature_proliferation_p50.png` | proliferation, p50 |
-| [![prolif p75](docs/figures/signature_proliferation_p75.png)](docs/figures/signature_proliferation_p75.png) | `signature_proliferation_p75.png` | proliferation, p75 |
-| [![prolif p90](docs/figures/signature_proliferation_p90.png)](docs/figures/signature_proliferation_p90.png) | `signature_proliferation_p90.png` | proliferation, p90 |
-| [![angio p50](docs/figures/signature_angiogenesis_p50.png)](docs/figures/signature_angiogenesis_p50.png) | `signature_angiogenesis_p50.png` | angiogenesis, p50 |
-| [![angio p75](docs/figures/signature_angiogenesis_p75.png)](docs/figures/signature_angiogenesis_p75.png) | `signature_angiogenesis_p75.png` | angiogenesis, p75 |
-| [![angio p90](docs/figures/signature_angiogenesis_p90.png)](docs/figures/signature_angiogenesis_p90.png) | `signature_angiogenesis_p90.png` | angiogenesis, p90 |
-| [![EMT p50](docs/figures/signature_emt_p50.png)](docs/figures/signature_emt_p50.png) | `signature_emt_p50.png` | EMT, p50 |
-| [![EMT p75](docs/figures/signature_emt_p75.png)](docs/figures/signature_emt_p75.png) | `signature_emt_p75.png` | EMT, p75 |
-| [![EMT p90](docs/figures/signature_emt_p90.png)](docs/figures/signature_emt_p90.png) | `signature_emt_p90.png` | EMT, p90 |
+#### Cell type maps
+
+<table><tr><td align="center"><a href="docs/figures/xenium_cell_types.png"><img src="docs/figures/xenium_cell_types.png" width="200"></a><br><code>xenium_cell_types · 7 types</code></td><td align="center"><a href="docs/figures/xenium_subcellular.png"><img src="docs/figures/xenium_subcellular.png" width="200"></a><br><code>xenium_subcellular · raw 14</code></td></tr></table>
+
+#### Interaction filters — single plot
+
+<table><tr><td align="center"><a href="docs/figures/interaction_neighborhood_enrichment.png"><img src="docs/figures/interaction_neighborhood_enrichment.png" width="200"></a><br><code>neighborhood</code></td><td align="center"><a href="docs/figures/interaction_tissue_borders.png"><img src="docs/figures/interaction_tissue_borders.png" width="200"></a><br><code>tissue_borders</code></td><td align="center"><a href="docs/figures/interaction_niche.png"><img src="docs/figures/interaction_niche.png" width="200"></a><br><code>niche</code></td><td align="center"><a href="docs/figures/interaction_juxtacrine.png"><img src="docs/figures/interaction_juxtacrine.png" width="200"></a><br><code>juxtacrine</code></td></tr></table>
+
+#### Paracrine distance — 3 thresholds
+
+<table><tr><td align="center"><a href="docs/figures/interaction_paracrine_t75.png"><img src="docs/figures/interaction_paracrine_t75.png" width="200"></a><br><code>t75</code></td><td align="center"><a href="docs/figures/interaction_paracrine_t90.png"><img src="docs/figures/interaction_paracrine_t90.png" width="200"></a><br><code>t90</code></td><td align="center"><a href="docs/figures/interaction_paracrine_t95.png"><img src="docs/figures/interaction_paracrine_t95.png" width="200"></a><br><code>t95</code></td></tr></table>
+
+#### Immune TLS — 3 radii
+
+<table><tr><td align="center"><a href="docs/figures/interaction_immune_tls_r30.png"><img src="docs/figures/interaction_immune_tls_r30.png" width="200"></a><br><code>r30 µm</code></td><td align="center"><a href="docs/figures/interaction_immune_tls_r50.png"><img src="docs/figures/interaction_immune_tls_r50.png" width="200"></a><br><code>r50 µm</code></td><td align="center"><a href="docs/figures/interaction_immune_tls_r80.png"><img src="docs/figures/interaction_immune_tls_r80.png" width="200"></a><br><code>r80 µm</code></td></tr></table>
+
+#### Signature filters — 3 thresholds each
+
+**Checkpoint (PD-L1 / PD-1)**
+
+<table><tr><td align="center"><a href="docs/figures/signature_checkpoint_p50.png"><img src="docs/figures/signature_checkpoint_p50.png" width="200"></a><br><code>p50</code></td><td align="center"><a href="docs/figures/signature_checkpoint_p75.png"><img src="docs/figures/signature_checkpoint_p75.png" width="200"></a><br><code>p75</code></td><td align="center"><a href="docs/figures/signature_checkpoint_p90.png"><img src="docs/figures/signature_checkpoint_p90.png" width="200"></a><br><code>p90</code></td></tr></table>
+
+**ER signaling**
+
+<table><tr><td align="center"><a href="docs/figures/signature_er_signaling_p50.png"><img src="docs/figures/signature_er_signaling_p50.png" width="200"></a><br><code>p50</code></td><td align="center"><a href="docs/figures/signature_er_signaling_p75.png"><img src="docs/figures/signature_er_signaling_p75.png" width="200"></a><br><code>p75</code></td><td align="center"><a href="docs/figures/signature_er_signaling_p90.png"><img src="docs/figures/signature_er_signaling_p90.png" width="200"></a><br><code>p90</code></td></tr></table>
+
+**Proliferation**
+
+<table><tr><td align="center"><a href="docs/figures/signature_proliferation_p50.png"><img src="docs/figures/signature_proliferation_p50.png" width="200"></a><br><code>p50</code></td><td align="center"><a href="docs/figures/signature_proliferation_p75.png"><img src="docs/figures/signature_proliferation_p75.png" width="200"></a><br><code>p75</code></td><td align="center"><a href="docs/figures/signature_proliferation_p90.png"><img src="docs/figures/signature_proliferation_p90.png" width="200"></a><br><code>p90</code></td></tr></table>
+
+**Angiogenesis**
+
+<table><tr><td align="center"><a href="docs/figures/signature_angiogenesis_p50.png"><img src="docs/figures/signature_angiogenesis_p50.png" width="200"></a><br><code>p50</code></td><td align="center"><a href="docs/figures/signature_angiogenesis_p75.png"><img src="docs/figures/signature_angiogenesis_p75.png" width="200"></a><br><code>p75</code></td><td align="center"><a href="docs/figures/signature_angiogenesis_p90.png"><img src="docs/figures/signature_angiogenesis_p90.png" width="200"></a><br><code>p90</code></td></tr></table>
+
+**EMT**
+
+<table><tr><td align="center"><a href="docs/figures/signature_emt_p50.png"><img src="docs/figures/signature_emt_p50.png" width="200"></a><br><code>p50</code></td><td align="center"><a href="docs/figures/signature_emt_p75.png"><img src="docs/figures/signature_emt_p75.png" width="200"></a><br><code>p75</code></td><td align="center"><a href="docs/figures/signature_emt_p90.png"><img src="docs/figures/signature_emt_p90.png" width="200"></a><br><code>p90</code></td></tr></table>
 
 **E03 result** (Xenium): integrity ✅, single-cell coordinates ✅, reproducibility ✅.  
 **Benchmark (50k cells):** `opencode-go/deepseek-v4.1-flash` 4.2s / `ollama llama3.2:1b` 41s / `ollama qwen2.5:7b` 64s.
@@ -385,6 +393,18 @@ python workflow/scripts/xenium_full.py --data /path/to/outs --n-cells 50000 --ou
 ├── LICENSE
 └── README.md
 ```
+
+---
+
+## 📚 Naming & eval gates
+
+| Prefix | Meaning | Example |
+|---|---|---|
+| `S0x` | build **steps** | `S07` = agent, `S08` = MCP |
+| `E0x` | **eval gates** — automated quality checks | `E01` pipeline, `E02` agent, `E03` Xenium |
+| `v0.x` | roadmap **milestones** | `v0.7` = interaction & signature filters |
+
+**Eval gates**: **E01** → pipeline (correctness · reproducibility · privacy) · **E02** → agent + RAG (retrieval · grounding · hallucination) · **E03** → Xenium (integrity · reproducibility). Each prints a clear `PASS` / `FAIL`.
 
 ---
 
