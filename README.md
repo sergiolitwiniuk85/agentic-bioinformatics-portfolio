@@ -273,7 +273,7 @@ python evals/e02_agent.py --llm opencode-go   # or --llm ollama / default fake
 
 ## 🔬 In silico interaction & signature filters
 
-A **virtual microscope**: apply a filter to reveal a class of cell-cell interaction, or a functional gene signature, over the tissue.
+Apply a **filter** to reveal a class of cell-cell interaction, or a functional gene signature, over the tissue.
 
 - **7 spatial-interaction filters**: neighborhood enrichment, tissue borders, paracrine distance, immune TLS, juxtacrine (direct cell contact), niche domains, ECM-cell.
 - **10 pre-indexed gene-signature panels**: proliferation, hypoxia, EMT, interferon, apoptosis, angiogenesis, immunotherapy/checkpoint, ER signaling, HER2, stemness.
@@ -418,7 +418,8 @@ python workflow/scripts/xenium_full.py --data /path/to/outs --n-cells 50000 --ou
 | v0.4 | LangGraph agent + MCP ✅ |
 | v0.5 | eval harness + benchmark ✅ |
 | v0.6 | Xenium spatial example (subcellular) ✅ |
-| v1.0 | docs, demo, workshop — *next* |
+| v0.7 | interaction & signature filters ✅ |
+| v1.0 | docs, demo, workshop ✅ |
 
 ---
 

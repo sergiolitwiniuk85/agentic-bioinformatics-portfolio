@@ -1,4 +1,4 @@
-"""In silico spatial-interaction filters (the 'virtual microscope')."""
+"""In silico spatial-interaction filters."""
 
 from agentic_bio.interactions.core import (
     FILTERS,

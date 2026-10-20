@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentic-bioinformatics-portfolio"
-version = "0.2.0"
+version = "1.0.0"
 description = "Agentic bioinformatics assistant: LLM agents + single-cell/spatial omics with CI and continuous evaluation."
 readme = "README.md"
 requires-python = ">=3.11"

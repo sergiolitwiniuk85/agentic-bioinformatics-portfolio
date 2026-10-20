@@ -1,4 +1,4 @@
-"""In silico spatial-interaction filters (the 'virtual microscope').
+"""In silico spatial-interaction filters.
 
 Each filter reveals one class of cell-cell interaction, computed in silico from
 spatial coordinates + expression. Filters 1-7 map to the interaction-type table.
