@@ -200,33 +200,37 @@ python workflow/scripts/xenium_full.py --data /path/to/outs --n-cells 50000 --ou
 | hypoxia | signature | skipped (0 genes in panel) | — |
 | stemness | signature | skipped (0 genes in panel) | — |
 
-**Figures generated (all in `docs/figures/`):**
+**Figures generated (click a thumbnail to open full size):**
 
-| Figure | Description |
-|---|---|
-| `xenium_cell_types.png` | 7 cell types, 7,248 cells |
-| `xenium_subcellular.png` | original 14-cluster map |
-| `interaction_neighborhood_enrichment.png` | neighborhood enrichment heatmap |
-| `interaction_tissue_borders.png` | tissue interface score |
-| `interaction_spatial_leiden.png` | spatial leiden clusters |
-| `interaction_niche.png` | niche domains |
-| `interaction_juxtacrine.png` | direct cell contacts |
-| `interaction_paracrine_t75/90/95.png` | paracrine distance thresholds |
-| `interaction_immune_tls_r30/50/80.png` | immune TLS radii |
-| `interaction_spatial_leiden.png` | spatial leiden clusters |
-| `interaction_perturb.png` | perturbation results |
-| `interaction_spatial_leiden.png` | spatial leiden clusters |
-| `signature_checkpoint_p50/75/90.png` | PD-L1/PD-1 signature |
-| `signature_er_signaling_p50/75/90.png` | ER signaling |
-| `signature_proliferation_p50/75/90.png` | proliferation |
-| `signature_angiogenesis_p50/75/90.png` | angiogenesis |
-| `signature_emt_p50/75/90.png` | EMT |
-| `interaction_perturb.png` | perturbation results |
-| `interaction_spatial_leiden.png` | spatial leiden clusters |
-| `signature_angiogenesis_p50/75/90.png` | angiogenesis |
-| `signature_emt_p50/75/90.png` | EMT |
-| `interaction_perturb.png` | perturbation results |
-| `interaction_spatial_leiden.png` | spatial leiden clusters |
+| Preview | Figure | Description |
+|---|---|---|
+| [![cell types](docs/figures/xenium_cell_types.png)](docs/figures/xenium_cell_types.png) | `xenium_cell_types.png` | 7 cell types, 7,248 cells |
+| [![subcellular](docs/figures/xenium_subcellular.png)](docs/figures/xenium_subcellular.png) | `xenium_subcellular.png` | original 14-cluster map |
+| [![neighborhood](docs/figures/interaction_neighborhood_enrichment.png)](docs/figures/interaction_neighborhood_enrichment.png) | `interaction_neighborhood_enrichment.png` | neighborhood enrichment heatmap |
+| [![borders](docs/figures/interaction_tissue_borders.png)](docs/figures/interaction_tissue_borders.png) | `interaction_tissue_borders.png` | tissue interface score |
+| [![niche](docs/figures/interaction_niche.png)](docs/figures/interaction_niche.png) | `interaction_niche.png` | niche domains |
+| [![juxtacrine](docs/figures/interaction_juxtacrine.png)](docs/figures/interaction_juxtacrine.png) | `interaction_juxtacrine.png` | direct cell contacts |
+| [![paracrine t75](docs/figures/interaction_paracrine_t75.png)](docs/figures/interaction_paracrine_t75.png) | `interaction_paracrine_t75.png` | paracrine distance, p75 |
+| [![paracrine t90](docs/figures/interaction_paracrine_t90.png)](docs/figures/interaction_paracrine_t90.png) | `interaction_paracrine_t90.png` | paracrine distance, p90 |
+| [![paracrine t95](docs/figures/interaction_paracrine_t95.png)](docs/figures/interaction_paracrine_t95.png) | `interaction_paracrine_t95.png` | paracrine distance, p95 |
+| [![TLS r30](docs/figures/interaction_immune_tls_r30.png)](docs/figures/interaction_immune_tls_r30.png) | `interaction_immune_tls_r30.png` | immune TLS, r30 µm |
+| [![TLS r50](docs/figures/interaction_immune_tls_r50.png)](docs/figures/interaction_immune_tls_r50.png) | `interaction_immune_tls_r50.png` | immune TLS, r50 µm |
+| [![TLS r80](docs/figures/interaction_immune_tls_r80.png)](docs/figures/interaction_immune_tls_r80.png) | `interaction_immune_tls_r80.png` | immune TLS, r80 µm |
+| [![checkpoint p50](docs/figures/signature_checkpoint_p50.png)](docs/figures/signature_checkpoint_p50.png) | `signature_checkpoint_p50.png` | checkpoint signature, p50 |
+| [![checkpoint p75](docs/figures/signature_checkpoint_p75.png)](docs/figures/signature_checkpoint_p75.png) | `signature_checkpoint_p75.png` | checkpoint signature, p75 |
+| [![checkpoint p90](docs/figures/signature_checkpoint_p90.png)](docs/figures/signature_checkpoint_p90.png) | `signature_checkpoint_p90.png` | checkpoint signature, p90 |
+| [![ER p50](docs/figures/signature_er_signaling_p50.png)](docs/figures/signature_er_signaling_p50.png) | `signature_er_signaling_p50.png` | ER signaling, p50 |
+| [![ER p75](docs/figures/signature_er_signaling_p75.png)](docs/figures/signature_er_signaling_p75.png) | `signature_er_signaling_p75.png` | ER signaling, p75 |
+| [![ER p90](docs/figures/signature_er_signaling_p90.png)](docs/figures/signature_er_signaling_p90.png) | `signature_er_signaling_p90.png` | ER signaling, p90 |
+| [![prolif p50](docs/figures/signature_proliferation_p50.png)](docs/figures/signature_proliferation_p50.png) | `signature_proliferation_p50.png` | proliferation, p50 |
+| [![prolif p75](docs/figures/signature_proliferation_p75.png)](docs/figures/signature_proliferation_p75.png) | `signature_proliferation_p75.png` | proliferation, p75 |
+| [![prolif p90](docs/figures/signature_proliferation_p90.png)](docs/figures/signature_proliferation_p90.png) | `signature_proliferation_p90.png` | proliferation, p90 |
+| [![angio p50](docs/figures/signature_angiogenesis_p50.png)](docs/figures/signature_angiogenesis_p50.png) | `signature_angiogenesis_p50.png` | angiogenesis, p50 |
+| [![angio p75](docs/figures/signature_angiogenesis_p75.png)](docs/figures/signature_angiogenesis_p75.png) | `signature_angiogenesis_p75.png` | angiogenesis, p75 |
+| [![angio p90](docs/figures/signature_angiogenesis_p90.png)](docs/figures/signature_angiogenesis_p90.png) | `signature_angiogenesis_p90.png` | angiogenesis, p90 |
+| [![EMT p50](docs/figures/signature_emt_p50.png)](docs/figures/signature_emt_p50.png) | `signature_emt_p50.png` | EMT, p50 |
+| [![EMT p75](docs/figures/signature_emt_p75.png)](docs/figures/signature_emt_p75.png) | `signature_emt_p75.png` | EMT, p75 |
+| [![EMT p90](docs/figures/signature_emt_p90.png)](docs/figures/signature_emt_p90.png) | `signature_emt_p90.png` | EMT, p90 |
 
 **E03 result** (Xenium): integrity ✅, single-cell coordinates ✅, reproducibility ✅.  
 **Benchmark (50k cells):** `opencode-go/deepseek-v4.1-flash` 4.2s / `ollama llama3.2:1b` 41s / `ollama qwen2.5:7b` 64s.
