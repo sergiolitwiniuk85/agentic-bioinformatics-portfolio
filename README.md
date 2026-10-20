@@ -166,77 +166,7 @@ The pipeline runs on **three independent datasets**:
 
 ---
 
-### 🔬 Full Xenium analysis (50k cells, breast full) — **v0.7**
-
-The pipeline now supports the **full breast Xenium dataset** (167,780 cells) with a **50k cell subset** for a reproducible, strong example:
-
-```bash
-# download breast full (~9.86 GB)
-curl -O https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip
-
-# run full pipeline on 50k cells + all filters × 3 thresholds
-snakemake -s workflow/Snakefile --directory . xenium_figure
-# or run the full script directly:
-python workflow/scripts/xenium_full.py --data /path/to/outs --n-cells 50000 --out results/xenium_full
-```
-
-**All filters × 3 thresholds generated:**
-
-| Filter | Type | Thresholds | Plots |
-|---|---|---|---|
-| neighborhood_enrichment | interaction | — | 1 |
-| tissue_borders | interaction | — | 1 |
-| paracrine_distance | interaction | 3 (75/90/95% pct) | 3 |
-| immune_tls | interaction | 3 (30/50/80 µm) | 3 |
-| juxtacrine | interaction | — | 1 |
-| niche | interaction | — | 1 |
-| checkpoint | signature | 3 (p50/p75/p90) | 3 |
-| er_signaling | signature | 3 (p50/p75/p90) | 3 |
-| proliferation | signature | 3 (p50/p75/p90) | 3 |
-| angiogenesis | signature | 3 (p50/p75/p90) | 3 |
-| emt | signature | 3 (p50/p75/p90) | 3 |
-| interferon | signature | skipped (0 genes in panel) | — |
-| apoptosis | signature | skipped (0 genes in panel) | — |
-| hypoxia | signature | skipped (0 genes in panel) | — |
-| stemness | signature | skipped (0 genes in panel) | — |
-
-**Figures generated (click a thumbnail to open full size):**
-
-| Preview | Figure | Description |
-|---|---|---|
-| [![cell types](docs/figures/xenium_cell_types.png)](docs/figures/xenium_cell_types.png) | `xenium_cell_types.png` | 7 cell types, 7,248 cells |
-| [![subcellular](docs/figures/xenium_subcellular.png)](docs/figures/xenium_subcellular.png) | `xenium_subcellular.png` | original 14-cluster map |
-| [![neighborhood](docs/figures/interaction_neighborhood_enrichment.png)](docs/figures/interaction_neighborhood_enrichment.png) | `interaction_neighborhood_enrichment.png` | neighborhood enrichment heatmap |
-| [![borders](docs/figures/interaction_tissue_borders.png)](docs/figures/interaction_tissue_borders.png) | `interaction_tissue_borders.png` | tissue interface score |
-| [![niche](docs/figures/interaction_niche.png)](docs/figures/interaction_niche.png) | `interaction_niche.png` | niche domains |
-| [![juxtacrine](docs/figures/interaction_juxtacrine.png)](docs/figures/interaction_juxtacrine.png) | `interaction_juxtacrine.png` | direct cell contacts |
-| [![paracrine t75](docs/figures/interaction_paracrine_t75.png)](docs/figures/interaction_paracrine_t75.png) | `interaction_paracrine_t75.png` | paracrine distance, p75 |
-| [![paracrine t90](docs/figures/interaction_paracrine_t90.png)](docs/figures/interaction_paracrine_t90.png) | `interaction_paracrine_t90.png` | paracrine distance, p90 |
-| [![paracrine t95](docs/figures/interaction_paracrine_t95.png)](docs/figures/interaction_paracrine_t95.png) | `interaction_paracrine_t95.png` | paracrine distance, p95 |
-| [![TLS r30](docs/figures/interaction_immune_tls_r30.png)](docs/figures/interaction_immune_tls_r30.png) | `interaction_immune_tls_r30.png` | immune TLS, r30 µm |
-| [![TLS r50](docs/figures/interaction_immune_tls_r50.png)](docs/figures/interaction_immune_tls_r50.png) | `interaction_immune_tls_r50.png` | immune TLS, r50 µm |
-| [![TLS r80](docs/figures/interaction_immune_tls_r80.png)](docs/figures/interaction_immune_tls_r80.png) | `interaction_immune_tls_r80.png` | immune TLS, r80 µm |
-| [![checkpoint p50](docs/figures/signature_checkpoint_p50.png)](docs/figures/signature_checkpoint_p50.png) | `signature_checkpoint_p50.png` | checkpoint signature, p50 |
-| [![checkpoint p75](docs/figures/signature_checkpoint_p75.png)](docs/figures/signature_checkpoint_p75.png) | `signature_checkpoint_p75.png` | checkpoint signature, p75 |
-| [![checkpoint p90](docs/figures/signature_checkpoint_p90.png)](docs/figures/signature_checkpoint_p90.png) | `signature_checkpoint_p90.png` | checkpoint signature, p90 |
-| [![ER p50](docs/figures/signature_er_signaling_p50.png)](docs/figures/signature_er_signaling_p50.png) | `signature_er_signaling_p50.png` | ER signaling, p50 |
-| [![ER p75](docs/figures/signature_er_signaling_p75.png)](docs/figures/signature_er_signaling_p75.png) | `signature_er_signaling_p75.png` | ER signaling, p75 |
-| [![ER p90](docs/figures/signature_er_signaling_p90.png)](docs/figures/signature_er_signaling_p90.png) | `signature_er_signaling_p90.png` | ER signaling, p90 |
-| [![prolif p50](docs/figures/signature_proliferation_p50.png)](docs/figures/signature_proliferation_p50.png) | `signature_proliferation_p50.png` | proliferation, p50 |
-| [![prolif p75](docs/figures/signature_proliferation_p75.png)](docs/figures/signature_proliferation_p75.png) | `signature_proliferation_p75.png` | proliferation, p75 |
-| [![prolif p90](docs/figures/signature_proliferation_p90.png)](docs/figures/signature_proliferation_p90.png) | `signature_proliferation_p90.png` | proliferation, p90 |
-| [![angio p50](docs/figures/signature_angiogenesis_p50.png)](docs/figures/signature_angiogenesis_p50.png) | `signature_angiogenesis_p50.png` | angiogenesis, p50 |
-| [![angio p75](docs/figures/signature_angiogenesis_p75.png)](docs/figures/signature_angiogenesis_p75.png) | `signature_angiogenesis_p75.png` | angiogenesis, p75 |
-| [![angio p90](docs/figures/signature_angiogenesis_p90.png)](docs/figures/signature_angiogenesis_p90.png) | `signature_angiogenesis_p90.png` | angiogenesis, p90 |
-| [![EMT p50](docs/figures/signature_emt_p50.png)](docs/figures/signature_emt_p50.png) | `signature_emt_p50.png` | EMT, p50 |
-| [![EMT p75](docs/figures/signature_emt_p75.png)](docs/figures/signature_emt_p75.png) | `signature_emt_p75.png` | EMT, p75 |
-| [![EMT p90](docs/figures/signature_emt_p90.png)](docs/figures/signature_emt_p90.png) | `signature_emt_p90.png` | EMT, p90 |
-
-**E03 result** (Xenium): integrity ✅, single-cell coordinates ✅, reproducibility ✅.  
-**Benchmark (50k cells):** `opencode-go/deepseek-v4.1-flash` 4.2s / `ollama llama3.2:1b` 41s / `ollama qwen2.5:7b` 64s.
-
-> Xenium data (2-FOV): `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip` (379 MB).  
-> **Full breast (167k cells):** `curl -O https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip` (~9.86 GB). Subset to 50k: `snakemake -s workflow/Snakefile --directory . xenium_figure --n-cells 50000`.
+## 🧠 RAG (retrieval-augmented generation)
 
 The agent grounds its answers in an internal knowledge base (`kb/*.md`) via Chroma:
 
@@ -362,6 +292,80 @@ plot_signature(adata, "checkpoint", "checkpoint.png")
 | Juxtacrine (direct contact) | Immunotherapy / checkpoint |
 | --- | --- |
 | ![Juxtacrine](docs/figures/interaction_juxtacrine.png) | ![Checkpoint](docs/figures/signature_checkpoint.png) |
+
+---
+
+### 🔬 Full Xenium analysis (50k cells, breast full) — **v0.7**
+
+The pipeline now supports the **full breast Xenium dataset** (167,780 cells) with a **50k cell subset** for a reproducible, strong example:
+
+```bash
+# download breast full (~9.86 GB)
+curl -O https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip
+
+# run full pipeline on 50k cells + all filters × 3 thresholds
+snakemake -s workflow/Snakefile --directory . xenium_figure
+# or run the full script directly:
+python workflow/scripts/xenium_full.py --data /path/to/outs --n-cells 50000 --out results/xenium_full
+```
+
+**All filters × 3 thresholds generated:**
+
+| Filter | Type | Thresholds | Plots |
+|---|---|---|---|
+| neighborhood_enrichment | interaction | — | 1 |
+| tissue_borders | interaction | — | 1 |
+| paracrine_distance | interaction | 3 (75/90/95% pct) | 3 |
+| immune_tls | interaction | 3 (30/50/80 µm) | 3 |
+| juxtacrine | interaction | — | 1 |
+| niche | interaction | — | 1 |
+| checkpoint | signature | 3 (p50/p75/p90) | 3 |
+| er_signaling | signature | 3 (p50/p75/p90) | 3 |
+| proliferation | signature | 3 (p50/p75/p90) | 3 |
+| angiogenesis | signature | 3 (p50/p75/p90) | 3 |
+| emt | signature | 3 (p50/p75/p90) | 3 |
+| interferon | signature | skipped (0 genes in panel) | — |
+| apoptosis | signature | skipped (0 genes in panel) | — |
+| hypoxia | signature | skipped (0 genes in panel) | — |
+| stemness | signature | skipped (0 genes in panel) | — |
+
+**Figures generated (click a thumbnail to open full size):**
+
+| Preview | Figure | Description |
+|---|---|---|
+| [![cell types](docs/figures/xenium_cell_types.png)](docs/figures/xenium_cell_types.png) | `xenium_cell_types.png` | 7 cell types, 7,248 cells |
+| [![subcellular](docs/figures/xenium_subcellular.png)](docs/figures/xenium_subcellular.png) | `xenium_subcellular.png` | original 14-cluster map |
+| [![neighborhood](docs/figures/interaction_neighborhood_enrichment.png)](docs/figures/interaction_neighborhood_enrichment.png) | `interaction_neighborhood_enrichment.png` | neighborhood enrichment heatmap |
+| [![borders](docs/figures/interaction_tissue_borders.png)](docs/figures/interaction_tissue_borders.png) | `interaction_tissue_borders.png` | tissue interface score |
+| [![niche](docs/figures/interaction_niche.png)](docs/figures/interaction_niche.png) | `interaction_niche.png` | niche domains |
+| [![juxtacrine](docs/figures/interaction_juxtacrine.png)](docs/figures/interaction_juxtacrine.png) | `interaction_juxtacrine.png` | direct cell contacts |
+| [![paracrine t75](docs/figures/interaction_paracrine_t75.png)](docs/figures/interaction_paracrine_t75.png) | `interaction_paracrine_t75.png` | paracrine distance, p75 |
+| [![paracrine t90](docs/figures/interaction_paracrine_t90.png)](docs/figures/interaction_paracrine_t90.png) | `interaction_paracrine_t90.png` | paracrine distance, p90 |
+| [![paracrine t95](docs/figures/interaction_paracrine_t95.png)](docs/figures/interaction_paracrine_t95.png) | `interaction_paracrine_t95.png` | paracrine distance, p95 |
+| [![TLS r30](docs/figures/interaction_immune_tls_r30.png)](docs/figures/interaction_immune_tls_r30.png) | `interaction_immune_tls_r30.png` | immune TLS, r30 µm |
+| [![TLS r50](docs/figures/interaction_immune_tls_r50.png)](docs/figures/interaction_immune_tls_r50.png) | `interaction_immune_tls_r50.png` | immune TLS, r50 µm |
+| [![TLS r80](docs/figures/interaction_immune_tls_r80.png)](docs/figures/interaction_immune_tls_r80.png) | `interaction_immune_tls_r80.png` | immune TLS, r80 µm |
+| [![checkpoint p50](docs/figures/signature_checkpoint_p50.png)](docs/figures/signature_checkpoint_p50.png) | `signature_checkpoint_p50.png` | checkpoint signature, p50 |
+| [![checkpoint p75](docs/figures/signature_checkpoint_p75.png)](docs/figures/signature_checkpoint_p75.png) | `signature_checkpoint_p75.png` | checkpoint signature, p75 |
+| [![checkpoint p90](docs/figures/signature_checkpoint_p90.png)](docs/figures/signature_checkpoint_p90.png) | `signature_checkpoint_p90.png` | checkpoint signature, p90 |
+| [![ER p50](docs/figures/signature_er_signaling_p50.png)](docs/figures/signature_er_signaling_p50.png) | `signature_er_signaling_p50.png` | ER signaling, p50 |
+| [![ER p75](docs/figures/signature_er_signaling_p75.png)](docs/figures/signature_er_signaling_p75.png) | `signature_er_signaling_p75.png` | ER signaling, p75 |
+| [![ER p90](docs/figures/signature_er_signaling_p90.png)](docs/figures/signature_er_signaling_p90.png) | `signature_er_signaling_p90.png` | ER signaling, p90 |
+| [![prolif p50](docs/figures/signature_proliferation_p50.png)](docs/figures/signature_proliferation_p50.png) | `signature_proliferation_p50.png` | proliferation, p50 |
+| [![prolif p75](docs/figures/signature_proliferation_p75.png)](docs/figures/signature_proliferation_p75.png) | `signature_proliferation_p75.png` | proliferation, p75 |
+| [![prolif p90](docs/figures/signature_proliferation_p90.png)](docs/figures/signature_proliferation_p90.png) | `signature_proliferation_p90.png` | proliferation, p90 |
+| [![angio p50](docs/figures/signature_angiogenesis_p50.png)](docs/figures/signature_angiogenesis_p50.png) | `signature_angiogenesis_p50.png` | angiogenesis, p50 |
+| [![angio p75](docs/figures/signature_angiogenesis_p75.png)](docs/figures/signature_angiogenesis_p75.png) | `signature_angiogenesis_p75.png` | angiogenesis, p75 |
+| [![angio p90](docs/figures/signature_angiogenesis_p90.png)](docs/figures/signature_angiogenesis_p90.png) | `signature_angiogenesis_p90.png` | angiogenesis, p90 |
+| [![EMT p50](docs/figures/signature_emt_p50.png)](docs/figures/signature_emt_p50.png) | `signature_emt_p50.png` | EMT, p50 |
+| [![EMT p75](docs/figures/signature_emt_p75.png)](docs/figures/signature_emt_p75.png) | `signature_emt_p75.png` | EMT, p75 |
+| [![EMT p90](docs/figures/signature_emt_p90.png)](docs/figures/signature_emt_p90.png) | `signature_emt_p90.png` | EMT, p90 |
+
+**E03 result** (Xenium): integrity ✅, single-cell coordinates ✅, reproducibility ✅.  
+**Benchmark (50k cells):** `opencode-go/deepseek-v4.1-flash` 4.2s / `ollama llama3.2:1b` 41s / `ollama qwen2.5:7b` 64s.
+
+> Xenium data (2-FOV): `curl -O https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_human_Breast_2fov/Xenium_V1_human_Breast_2fov_outs.zip` (379 MB).  
+> **Full breast (167k cells):** `curl -O https://cf.10xgenomics.com/samples/xenium/1.0.1/Xenium_FFPE_Human_Breast_Cancer_Rep1/Xenium_FFPE_Human_Breast_Cancer_Rep1_outs.zip` (~9.86 GB). Subset to 50k: `snakemake -s workflow/Snakefile --directory . xenium_figure --n-cells 50000`.
 
 ---
 
